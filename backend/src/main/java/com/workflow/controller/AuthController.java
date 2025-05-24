@@ -15,11 +15,19 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/auth")
 @Tag(name = "Authentication", description = "Authentication endpoints")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = {"http://localhost:5001", "http://localhost:5000", "http://localhost:3000"}, 
+             allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, 
+                                             RequestMethod.DELETE, RequestMethod.OPTIONS})
 public class AuthController {
 
     @Autowired
     private AuthService authService;
+    
+    // Add OPTIONS method support for preflight requests
+    @RequestMapping(method = RequestMethod.OPTIONS)
+    public ResponseEntity<?> options() {
+        return ResponseEntity.ok().build();
+    }
 
     @PostMapping("/register")
     @Operation(summary = "Register new user")

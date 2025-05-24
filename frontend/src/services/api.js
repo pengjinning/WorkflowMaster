@@ -1,13 +1,24 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
+// For development, use the actual backend URL to bypass proxy issues
+const API_BASE_URL = 'http://localhost:8000/api';
 
 // Create axios instance
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Access-Control-Allow-Origin': '*'
   },
+  // Don't use withCredentials since we're using token auth
+  withCredentials: false,
+});
+
+// Add custom debugging for API calls
+api.interceptors.request.use(request => {
+  console.log('API Request:', request.method, request.url);
+  return request;
 });
 
 // Add auth token to requests
@@ -38,26 +49,78 @@ api.interceptors.response.use(
   }
 );
 
-// Auth Service
+// Auth Service with enhanced debugging
 export const authService = {
   login: async (username, password) => {
-    const response = await api.post('/auth/login', { username, password });
-    return response.data;
+    console.log(`Attempting login API call to ${API_BASE_URL}/auth/login`);
+    try {
+      const requestData = { username, password };
+      console.log('Request payload:', requestData);
+      
+      const response = await api.post('/auth/login', requestData);
+      console.log('Login API response:', response.data);
+      
+      // Validate response format
+      if (!response.data || !response.data.token) {
+        console.error('Invalid response format:', response.data);
+        throw new Error('Server returned an invalid response format');
+      }
+      
+      return response.data;
+    } catch (error) {
+      console.error('Login API error:', error);
+      
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.error('Error status:', error.response.status);
+        console.error('Error data:', error.response.data);
+        throw new Error(error.response.data?.message || `Login failed (${error.response.status})`);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error('No response received:', error.request);
+        throw new Error('No response from server. Please check your network connection.');
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error('Request setup error:', error.message);
+        throw error;
+      }
+    }
   },
 
   register: async (username, email, password) => {
-    const response = await api.post('/auth/register', { username, email, password });
-    return response.data;
+    console.log(`Attempting registration API call to ${API_BASE_URL}/auth/register`);
+    try {
+      const response = await api.post('/auth/register', { username, email, password });
+      console.log('Registration API response:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Registration API error:', error);
+      if (error.response) {
+        throw new Error(error.response.data?.message || `Registration failed (${error.response.status})`);
+      }
+      throw error;
+    }
   },
 
   getCurrentUser: async () => {
-    const response = await api.get('/users/profile');
-    return response.data;
+    try {
+      const response = await api.get('/users/profile');
+      return response.data;
+    } catch (error) {
+      console.error('Get user profile error:', error);
+      throw error;
+    }
   },
 
   updateProfile: async (userData) => {
-    const response = await api.put('/users/profile', userData);
-    return response.data;
+    try {
+      const response = await api.put('/users/profile', userData);
+      return response.data;
+    } catch (error) {
+      console.error('Update profile error:', error);
+      throw error;
+    }
   }
 };
 

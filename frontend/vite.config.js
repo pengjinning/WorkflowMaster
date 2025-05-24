@@ -4,12 +4,17 @@ import { resolve } from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react({
+      include: "**/*.{jsx,js}",
+      jsxRuntime: 'automatic'
+    })
+  ],
   
   // Development server configuration
   server: {
     host: '0.0.0.0',
-    port: 5000,
+    port: 5001,
     strictPort: true,
     cors: true,
     allowedHosts: [
@@ -21,7 +26,24 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:8000',
         changeOrigin: true,
-        secure: false
+        secure: false,
+        rewrite: (path) => path,
+        configure: (proxy, options) => {
+          // Log proxy requests for debugging
+          proxy.on('error', (err, req, res) => {
+            console.error('Proxy error:', err);
+          });
+          proxy.on('proxyReq', (proxyReq, req, res) => {
+            console.log('Proxy request:', req.method, req.url);
+            // Make sure the Origin header is properly set
+            proxyReq.setHeader('Origin', 'http://localhost:5001');
+          });
+          proxy.on('proxyRes', (proxyRes, req, res) => {
+            console.log('Proxy response:', proxyRes.statusCode, req.url);
+            // Log headers for debugging
+            console.log('Response headers:', proxyRes.headers);
+          });
+        }
       },
       '/ws': {
         target: 'ws://localhost:8000',
@@ -65,10 +87,12 @@ export default defineConfig({
     }
   },
   
-  // Environment variables
+  // Environment variables - simplified to avoid process.env issues
   define: {
-    __APP_VERSION__: JSON.stringify(process.env.npm_package_version),
-    __BUILD_TIME__: JSON.stringify(new Date().toISOString())
+    __APP_VERSION__: JSON.stringify('1.0.0'),
+    __BUILD_TIME__: JSON.stringify(new Date().toISOString()),
+    // Provide empty process.env to prevent errors
+    'process.env': JSON.stringify({})
   },
   
   // CSS configuration
@@ -97,7 +121,7 @@ export default defineConfig({
   // Preview configuration (for build preview)
   preview: {
     host: '0.0.0.0',
-    port: 5000,
+    port: 5001,
     strictPort: true,
     cors: true
   },

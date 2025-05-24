@@ -5,6 +5,22 @@ spring:
   profiles:
     active: dev
   
+  # Enable bean definition overriding as a fallback
+  main:
+    allow-bean-definition-overriding: true
+  
+  # Simplified global CORS configuration
+  mvc:
+    cors:
+      mapping: "/**"
+      allowed-origins: "*"
+      allowed-origin-patterns: "*"
+      allowed-methods: "*"
+      allowed-headers: "*"
+      exposed-headers: "Authorization,Content-Disposition"
+      allow-credentials: true
+      max-age: 3600
+  
   datasource:
     url: ${DATABASE_URL:jdbc:h2:mem:testdb}
     username: ${DATABASE_USERNAME:sa}
@@ -41,6 +57,7 @@ logging:
     com.workflow: ${LOG_LEVEL:DEBUG}
     org.springframework.security: ${SECURITY_LOG_LEVEL:INFO}
     org.hibernate.SQL: ${SQL_LOG_LEVEL:DEBUG}
+    org.springframework.web.cors: DEBUG # Add CORS debug logging
 
 # Swagger/OpenAPI configuration
 springdoc:

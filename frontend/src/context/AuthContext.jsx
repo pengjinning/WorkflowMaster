@@ -24,24 +24,47 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (username, password) => {
+    console.log('AuthContext: login attempt started');
     try {
       setIsLoading(true);
+      setIsAuthenticated(false);
+      
+      // Clear any existing tokens/data
+      localStorage.removeItem('workflow_token');
+      localStorage.removeItem('workflow_user');
+      
       const response = await authService.login(username, password);
+      console.log('AuthContext: received login response', response);
+      
+      if (!response || !response.token || !response.user) {
+        console.error('AuthContext: Invalid response format', response);
+        throw new Error('Invalid response from server');
+      }
       
       const { user: userData, token: userToken } = response;
       
       // Save to localStorage
       localStorage.setItem('workflow_token', userToken);
       localStorage.setItem('workflow_user', JSON.stringify(userData));
+      console.log('AuthContext: saved auth data to localStorage');
       
       // Update state
       setToken(userToken);
       setUser(userData);
       setIsAuthenticated(true);
+      console.log('AuthContext: authentication successful');
       
       return response;
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('AuthContext: login error:', error);
+      
+      // Clear any partial data that might have been set
+      localStorage.removeItem('workflow_token');
+      localStorage.removeItem('workflow_user');
+      setToken(null);
+      setUser(null);
+      setIsAuthenticated(false);
+      
       throw error;
     } finally {
       setIsLoading(false);
