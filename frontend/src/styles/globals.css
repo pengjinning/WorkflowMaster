@@ -76,7 +76,28 @@ a:hover {
 .main-content {
   flex: 1;
   display: flex;
-  min-height: calc(100vh - 60px);
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: hidden;
+  padding-top: 60px; /* Match navbar height */
+}
+
+/* Container adjustments for better spacing */
+.main-content .container-fluid {
+  max-width: 1600px;
+  padding: 20px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Adjustments for collapsed sidebar spacing */
+.sidebar.collapsed + .main-content {
+  padding-left: 10px;
+}
+
+/* Extra padding for content to account for fixed header */
+.main-content .container-fluid {
+  padding-top: 20px;
 }
 
 .content-area {
@@ -132,8 +153,17 @@ a:hover {
   position: fixed;
   top: 0;
   right: 0;
-  left: 250px;
+  left: 0;
   z-index: 999;
+  width: 100%; /* Full width */
+}
+
+/* App container */
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
 }
 
 /* Card Enhancements */
@@ -382,7 +412,171 @@ a:hover {
     padding: 15px;
   }
 }
+/* Sidebar styles - updated for better responsiveness */
+.sidebar {
+  min-height: 100vh;
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1030;
+  transition: all 0.3s ease;
+  overflow-y: auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
+.sidebar.collapsed {
+  width: 60px;
+}
+
+.sidebar-header {
+  height: 60px;
+}
+
+.sidebar-content {
+  overflow-y: auto;
+  height: calc(100vh - 110px); /* Account for header and potential footer */
+}
+
+.sidebar-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.sidebar .sidebar-toggle {
+  background: transparent;
+  border: none;
+  padding: 5px;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  transition: color 0.2s ease;
+}
+
+.sidebar .sidebar-toggle:hover,
+.sidebar .sidebar-toggle:focus {
+  color: #fff;
+}
+
+.sidebar .nav-link {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.2s ease;
+}
+
+.sidebar .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.sidebar .nav-link.active {
+  background-color: var(--bs-primary, #0d6efd);
+  color: #fff;
+}
+
+.sidebar .nav-link.icon-only {
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.sidebar .nav-link i {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+/* Main content layout - updated to work with fixed sidebar */
+.main-content {
+  margin-left: 250px;
+  width: calc(100% - 250px);
+  min-height: 100vh;
+  transition: margin 0.3s ease, width 0.3s ease;
+  padding-left: 0;
+  position: relative;
+}
+
+.main-content.expanded {
+  margin-left: 70px; /* Increased from 60px to add space */
+  width: calc(100% - 70px);
+}
+
+/* Main content header */
+.main-content .navbar {
+  padding-left: 20px;
+  padding-right: 20px;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1020;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Main content area */
+.main-content .container-fluid {
+  padding: 75px 20px 20px 20px; /* Add top padding to account for fixed navbar */
+  max-width: 1600px; /* Limit max width for better readability on large screens */
+  margin: 0 auto; /* Center the content */
+}
+
+/* Mobile & responsive styles */
+@media (max-width: 767.98px) {
+  .sidebar {
+    width: 250px;
+    transform: translateX(-100%);
+    z-index: 1050; /* Higher than navbar */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .sidebar.collapsed {
+    transform: translateX(-100%);
+  }
+  
+  .sidebar:not(.collapsed) {
+    transform: translateX(0);
+  }
+  
+  .main-content {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+  
+  /* Mobile sidebar backdrop */
+  .sidebar-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1040;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  
+  .sidebar-backdrop.show {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* Larger screens */
+@media (min-width: 992px) {
+  .main-content {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+  }
+  
+  .main-content.expanded {
+    margin-left: 60px;
+    width: calc(100% - 60px);
+  }
+}
 /* Animation Classes */
 .fade-in {
   animation: fadeIn 0.3s ease-in;

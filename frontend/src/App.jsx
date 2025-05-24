@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { WorkflowProvider } from './context/WorkflowContext';
+import { SidebarProvider, SidebarContext } from './context/SidebarContext';
 import Header from './components/common/Header';
 import Sidebar from './components/common/Sidebar';
 import HomePage from './pages/HomePage';
@@ -15,37 +16,58 @@ function App() {
   return (
     <AuthProvider>
       <WorkflowProvider>
-        <Router>
-          <div className="app">
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/*" element={
-                <ProtectedRoute>
-                  <MainLayout />
-                </ProtectedRoute>
-              } />
-            </Routes>
-          </div>
-        </Router>
+        <SidebarProvider>
+          <Router>
+            <div className="app">
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/*" element={
+                  <ProtectedRoute>
+                    <MainLayout />
+                  </ProtectedRoute>
+                } />
+              </Routes>
+            </div>
+          </Router>
+        </SidebarProvider>
       </WorkflowProvider>
     </AuthProvider>
   );
 }
 
 function MainLayout() {
+  const { collapsed, toggleSidebar, isMobile } = useContext(SidebarContext);
+  const [showBackdrop, setShowBackdrop] = useState(false);
+  
+  // Update backdrop visibility based on sidebar state and device
+  useEffect(() => {
+    setShowBackdrop(!collapsed && isMobile);
+  }, [collapsed, isMobile]);
+  
   return (
-    <div className="d-flex">
+    <div className="app-container d-flex">
       <Sidebar />
-      <div className="flex-grow-1">
+      
+      <div className={`main-content ${collapsed ? 'expanded' : ''}`}>
         <Header />
-        <main className="container-fluid p-4">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/workflows" element={<WorkflowsPage />} />
-            <Route path="/tasks" element={<TasksPage />} />
-          </Routes>
-        </main>
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-12">
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/workflows" element={<WorkflowsPage />} />
+                <Route path="/tasks" element={<TasksPage />} />
+              </Routes>
+            </div>
+          </div>
+        </div>
       </div>
+      
+      {/* Mobile backdrop for sidebar - only shown on mobile when sidebar is open */}
+      <div 
+        className={`sidebar-backdrop ${showBackdrop ? 'show' : ''}`} 
+        onClick={toggleSidebar}
+      />
     </div>
   );
 }

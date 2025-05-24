@@ -39,9 +39,21 @@ public class CorsConfig implements WebMvcConfigurer {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
+        // Set specific origins instead of patterns for better compatibility
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5001"));
+        // Fall back to patterns if needed
         configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers"));
+        // Do not include "Access-Control-Allow-Origin" as an allowed header
+        configuration.setAllowedHeaders(Arrays.asList(
+            "Authorization", 
+            "Content-Type", 
+            "X-Requested-With", 
+            "Accept", 
+            "Origin", 
+            "Access-Control-Request-Method", 
+            "Access-Control-Request-Headers"
+        ));
         configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Disposition"));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
@@ -56,6 +68,9 @@ public class CorsConfig implements WebMvcConfigurer {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
+        // Set specific origins for better compatibility
+        config.setAllowedOrigins(Arrays.asList("http://localhost:5001"));
+        // Fall back to patterns if needed
         config.setAllowedOriginPatterns(Collections.singletonList("*"));
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");

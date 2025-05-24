@@ -1,16 +1,28 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
+import { SidebarContext } from '../../context/SidebarContext';
 
 function Header() {
   const { user, logout } = useContext(AuthContext);
-
+  const { toggleSidebar, collapsed } = useContext(SidebarContext);
+  
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom px-4">
-      <div className="container-fluid">
-        <span className="navbar-brand mb-0 h1">
-          <i className="fas fa-cogs me-2"></i>
-          Workflow Automation
-        </span>
+    <nav className="navbar navbar-expand navbar-light bg-white border-bottom shadow-sm">
+      <div className="container-fluid px-3">
+        <div className="d-flex align-items-center">
+          <button 
+            className="btn btn-sm btn-outline-secondary me-3 d-md-none" 
+            onClick={toggleSidebar}
+            aria-label="Toggle Sidebar"
+            type="button"
+          >
+            <i className="fas fa-bars"></i>
+          </button>
+          <span className="navbar-brand h1 mb-0 fs-5">
+            <i className="fas fa-cogs me-2"></i>
+            Workflow Automation
+          </span>
+        </div>
         
         <div className="navbar-nav ms-auto">
           <div className="nav-item dropdown">

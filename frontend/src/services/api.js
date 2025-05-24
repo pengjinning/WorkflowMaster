@@ -1,15 +1,14 @@
 import axios from 'axios';
 
-// For development, use the actual backend URL to bypass proxy issues
-const API_BASE_URL = 'http://localhost:8000/api';
+// Use Vite's proxy for development
+const API_BASE_URL = '/api';
 
 // Create axios instance
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Access-Control-Allow-Origin': '*'
+    'Accept': 'application/json'
   },
   // Don't use withCredentials since we're using token auth
   withCredentials: false,
