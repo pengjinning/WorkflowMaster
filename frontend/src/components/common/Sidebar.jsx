@@ -19,31 +19,9 @@ function Sidebar() {
 
   return (
     <aside 
-      className={`sidebar bg-dark text-light ${collapsed ? 'collapsed' : ''}`} 
+      className={`sidebar text-light ${collapsed ? 'collapsed' : ''}`} 
       id="sidebar"
-      style={{ zIndex: 1050 }}
     >
-      <div className="sidebar-header border-bottom d-flex justify-content-between align-items-center px-3">
-        <div className={`logo-container ${collapsed ? 'text-center w-100 py-3' : ''}`}>
-          {!collapsed ? (
-            <h5 className="mb-0 d-flex align-items-center">
-              <i className="fas fa-robot me-2"></i>
-              <span className="logo-text">Workflow Hub</span>
-            </h5>
-          ) : (
-            <i className="fas fa-robot fs-4"></i>
-          )}
-        </div>
-        
-        <button 
-          className="btn btn-sm text-light sidebar-toggle d-none d-md-block"
-          onClick={toggleSidebar}
-          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-        >
-          <i className={`fas ${collapsed ? 'fa-angle-right' : 'fa-angle-left'}`}></i>
-        </button>
-      </div>
-      
       <div className="sidebar-content">
         <nav className="nav flex-column p-3">
           {navItems.map((item) => (
@@ -55,13 +33,14 @@ function Sidebar() {
               }
               end={item.path === '/'}
               title={item.label}
+              onClick={(e) => isMobile && toggleSidebar()}
             >
-              <i className={`${item.icon} ${collapsed ? '' : 'me-2'}`}></i>
+              <i className={`${item.icon} ${collapsed ? '' : 'me-3'}`}></i>
               <span className={`nav-text ${collapsed ? 'd-none' : ''}`}>{item.label}</span>
             </NavLink>
           ))}
           
-          <hr className={`my-3 ${collapsed ? 'mx-auto w-50' : ''}`} />
+          <hr className={`my-3 ${collapsed ? 'mx-auto w-25' : ''}`} />
           
           <div className="nav-section">
             {!collapsed && (
@@ -74,24 +53,14 @@ function Sidebar() {
                 href={item.href} 
                 className={`nav-link rounded mb-2 ${collapsed ? 'icon-only' : ''}`}
                 title={item.label}
+                onClick={(e) => isMobile && toggleSidebar()}
               >
-                <i className={`${item.icon} ${collapsed ? '' : 'me-2'}`}></i>
+                <i className={`${item.icon} ${collapsed ? '' : 'me-3'}`}></i>
                 <span className={`nav-text ${collapsed ? 'd-none' : ''}`}>{item.label}</span>
               </a>
             ))}
           </div>
         </nav>
-      </div>
-      
-      {/* Mobile toggle button at the bottom */}
-      <div className="sidebar-footer border-top p-2 d-md-none">
-        <button 
-          className="btn btn-sm btn-dark w-100" 
-          onClick={toggleSidebar}
-        >
-          <i className={`fas ${collapsed ? 'fa-angle-right' : 'fa-angle-left'} me-2`}></i>
-          {!collapsed && "Collapse"}
-        </button>
       </div>
     </aside>
   );

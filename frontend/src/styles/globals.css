@@ -71,15 +71,16 @@ a:hover {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
+  padding-top: 50px; /* Account for fixed navbar height */
 }
 
 .main-content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
   overflow-x: hidden;
-  padding-top: 60px; /* Match navbar height */
+  padding-top: 0; /* No need for top padding as we've reorganized the layout */
 }
 
 /* Container adjustments for better spacing */
@@ -91,8 +92,8 @@ a:hover {
 }
 
 /* Adjustments for collapsed sidebar spacing */
-.sidebar.collapsed + .main-content {
-  padding-left: 10px;
+.main-content {
+  transition: margin-left 0.3s ease, width 0.3s ease, padding-left 0.3s ease;
 }
 
 /* Extra padding for content to account for fixed header */
@@ -146,16 +147,162 @@ a:hover {
 
 /* Header Styles */
 .navbar {
-  background: white !important;
-  border-bottom: 1px solid hsl(var(--border));
-  padding: 12px 20px;
-  height: 60px;
+  background: hsl(var(--dark)) !important; /* Match sidebar background */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0 15px;
+  height: 50px; /* Fixed height */
   position: fixed;
   top: 0;
   right: 0;
   left: 0;
-  z-index: 999;
-  width: 100%; /* Full width */
+  z-index: 1040; /* Higher than sidebar */
+  width: 100%;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root, .app {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar .navbar-brand {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0;
+  margin: 0;
+  color: white !important;
+  display: flex;
+  align-items: center;
+}
+
+/* Container adjustments for better alignment */
+.navbar .container-fluid {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.navbar .nav-link {
+  padding: 0.4rem 0.75rem;
+  color: rgba(255, 255, 255, 0.8) !important;
+  transition: color 0.2s ease;
+}
+
+.navbar .nav-link:hover {
+  color: white !important;
+}
+
+/* Hamburger menu toggle button styling */
+.sidebar-toggle-btn {
+  background-color: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.85);
+  transition: all 0.2s ease;
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.sidebar-toggle-btn:hover {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.sidebar-toggle-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+}
+
+.sidebar-toggle-btn:active {
+  transform: scale(0.95);
+}
+
+/* Ensure hamburger lines are evenly spaced */
+.hamburger-icon {
+  width: 24px;
+  height: 18px;
+}
+
+.hamburger-icon span {
+  width: 100%;
+  height: 2.5px;
+  margin: 0;
+  background-color: white;
+}
+
+/* Add subtle animation on hover */
+.sidebar-toggle-btn:hover .hamburger-icon span:nth-child(1) {
+  width: 80%;
+}
+
+.sidebar-toggle-btn:hover .hamburger-icon span:nth-child(2) {
+  width: 100%;
+}
+
+.sidebar-toggle-btn:hover .hamburger-icon span:nth-child(3) {
+  width: 60%;
+}
+
+.sidebar-toggle-btn i {
+  font-size: 1.25rem;
+}
+
+/* Custom hamburger icon with three lines */
+.hamburger-icon {
+  width: 22px;
+  height: 16px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hamburger-icon span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background-color: white;
+  border-radius: 1px;
+  transition: all 0.25s ease;
+}
+
+/* Hover animation */
+.sidebar-toggle-btn:hover .hamburger-icon span {
+  background-color: white;
+}
+
+.navbar .dropdown-menu-dark {
+  background-color: hsl(var(--dark));
+  margin-top: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.navbar .dropdown-item {
+  color: rgba(255, 255, 255, 0.8);
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+
+.navbar .dropdown-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
 }
 
 /* App container */
@@ -164,6 +311,108 @@ a:hover {
   min-height: 100vh;
   width: 100%;
   position: relative;
+}
+
+/* Reset container margins when in workflow edit mode */
+.workflow-edit-mode {
+  margin: 0 !important;
+  padding: 0 !important;
+  max-width: 100% !important;
+  width: 100vw !important;
+}
+
+.workflow-edit-mode > .row {
+  margin: 0 !important;
+  width: 100% !important;
+}
+
+.workflow-edit-mode > .row > .col,
+.workflow-edit-mode > .row > [class^="col-"] {
+  padding: 0 !important;
+}
+
+/* Equal height cards */
+.equal-height-cards .card {
+  height: 100%;
+}
+
+/* Workflow Editor Layout - Isolated Styles */
+.workflow-editor-container {
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 70px); /* Full height minus header */
+  gap: 0;
+  position: relative;
+  overflow: hidden;
+  margin: -16px; /* Remove default container padding */
+}
+
+.workflow-editor-sidebar {
+  width: 300px;
+  min-width: 300px;
+  padding: 0;
+  background-color: #f8fafc;
+  border-right: 1px solid hsl(var(--border));
+  height: 100%;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.workflow-editor-main {
+  flex: 1;
+  padding: 0;
+  background-color: #ffffff;
+  min-height: 100%;
+  position: relative;
+}
+
+.workflow-editor-sidebar-content {
+  padding: 15px;
+}
+
+.workflow-editor-container h2 {
+  margin-bottom: 20px;
+  color: hsl(var(--foreground));
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.workflow-editor-sidebar h3 {
+  margin-bottom: 15px;
+  font-size: 1.25rem;
+}
+
+/* Form controls within workflow editor */
+.workflow-editor-sidebar .form-group {
+  margin-bottom: 20px;
+}
+
+.workflow-editor-sidebar label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.workflow-editor-sidebar .form-control {
+  width: 100%;
+}
+
+.workflow-editor-sidebar .btn-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+@media (max-width: 992px) {
+  .workflow-editor-container {
+    flex-direction: column;
+  }
+  
+  .workflow-editor-sidebar {
+    width: 100%;
+    min-width: auto;
+    margin-bottom: 20px;
+  }
 }
 
 /* Card Enhancements */
@@ -176,6 +425,61 @@ a:hover {
 
 .card:hover {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Stats Cards - Consistent Size */
+.stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -10px; /* Counteract padding in columns */
+}
+
+.stats-row .col-md-3,
+.stats-row .col-sm-6 {
+  padding: 0 10px;
+  margin-bottom: 20px;
+  display: flex;
+}
+
+.stats-row .card {
+  width: 100%;
+  height: 100%;
+  min-height: 170px; /* Fixed minimum height */
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stats-row .card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.stats-row .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem;
+  flex: 1;
+}
+
+.stats-row .card .display-4 {
+  font-size: 2.5rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+/* Ensure all cards in stats-row have exactly the same height */
+@media (min-width: 768px) {
+  .stats-row .col-md-3 {
+    height: 170px; /* Fixed height on medium screens and up */
+  }
+}
+
+@media (max-width: 767.98px) {
+  .stats-row .col-sm-6 {
+    height: 160px; /* Fixed height on small screens */
+  }
 }
 
 .card-header {
@@ -231,6 +535,149 @@ a:hover {
   background-color: hsl(var(--danger));
   border-color: hsl(var(--danger));
   color: white;
+}
+
+/* Workflow Window Specific Styles */
+.workflow-window {
+  --wf-label-color: #000000;
+  --wf-header-color: #1a365d;
+  --wf-subheader-color: #2c5282;
+  --wf-icon-color: #3182ce;
+  --wf-close-icon-color: #e53e3e;
+}
+
+.dark-mode .workflow-window {
+  --wf-label-color: #ffffff;
+  --wf-header-color: #90cdf4;
+  --wf-subheader-color: #63b3ed;
+  --wf-icon-color: #4299e1;
+  --wf-close-icon-color: #fc8181;
+}
+
+/* Palette Header Styling */
+.palette-header {
+  color: var(--wf-header-color);
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 10px 15px;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+}
+
+.dark-mode .palette-header {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Workflow Labels */
+.workflow-label {
+  color: var(--wf-label-color);
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 5px;
+}
+
+/* Close SVG Icon */
+.workflow-close-icon {
+  color: var(--wf-close-icon-color);
+  width: 20px;
+  height: 20px;
+}
+
+.workflow-close-icon:hover {
+  color: #c53030;
+}
+
+.dark-mode .workflow-close-icon:hover {
+  color: #f56565;
+}
+
+/* All SVG icons in workflow */
+.workflow-icon {
+  color: var(--wf-icon-color);
+}
+
+/* ReactFlow full page styling */
+.react-flow {
+  width: 100%;
+  height: 100%;
+}
+
+.react-flow__container {
+  width: 100%;
+  height: 100%;
+}
+
+/* Workflow nodes and handles */
+.react-flow__node {
+  font-weight: 600;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.react-flow__node:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.react-flow__node-default {
+  border: 2px solid #cbd5e0;
+  background-color: white;
+  color: #2d3748;
+  padding: 10px 15px;
+  border-radius: 6px;
+}
+
+.dark-mode .react-flow__node-default {
+  border: 2px solid #4a5568;
+  background-color: #2d3748;
+  color: #e2e8f0;
+}
+
+.react-flow__handle {
+  background-color: #3182ce;
+  border: 2px solid white;
+  width: 10px;
+  height: 10px;
+}
+
+.dark-mode .react-flow__handle {
+  background-color: #4299e1;
+  border: 2px solid #2d3748;
+}
+
+.react-flow__edge-path {
+  stroke: #64748b;
+  stroke-width: 2;
+}
+
+.dark-mode .react-flow__edge-path {
+  stroke: #94a3b8;
+}
+
+.react-flow__controls {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.react-flow__controls-button {
+  background-color: white;
+  border-bottom: 1px solid #e2e8f0;
+  color: #4a5568;
+  width: 32px;
+  height: 32px;
+}
+
+.dark-mode .react-flow__controls-button {
+  background-color: #2d3748;
+  border-bottom: 1px solid #4a5568;
+  color: #e2e8f0;
+}
+
+.react-flow__panel {
+  padding: 0;
 }
 
 .btn-danger:hover {
@@ -414,51 +861,63 @@ a:hover {
 }
 /* Sidebar styles - updated for better responsiveness */
 .sidebar {
-  min-height: 100vh;
-  height: 100%;
+  height: calc(100vh - 50px); /* Subtract exact header height */
   width: 250px;
   position: fixed;
   left: 0;
-  top: 0;
+  top: 50px; /* Position exactly below header */
   bottom: 0;
   z-index: 1030;
-  transition: all 0.3s ease;
-  overflow-y: auto;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow-y: hidden; /* Hide scrollbar */
+  transition: width 0.3s ease, transform 0.3s ease;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  background-color: hsl(var(--dark));
+  will-change: width, transform;
 }
 
 .sidebar.collapsed {
   width: 60px;
+  overflow-x: hidden;
 }
 
-.sidebar-header {
-  height: 60px;
+.sidebar.collapsed .nav-link {
+  justify-content: center;
+  padding: 10px 0;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.sidebar.collapsed hr {
+  width: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 0.3;
 }
 
 .sidebar-content {
-  overflow-y: auto;
-  height: calc(100vh - 110px); /* Account for header and potential footer */
+  overflow-y: auto; /* Keep overflow auto only for content */
+  height: 100%;
+  padding-bottom: 20px;
+  padding-top: 10px;
 }
 
-.sidebar-footer {
-  position: absolute;
-  bottom: 0;
+.sidebar.collapsed .sidebar-content {
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sidebar.collapsed .nav-section {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.sidebar .sidebar-toggle {
-  background: transparent;
-  border: none;
-  padding: 5px;
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.7);
-  transition: color 0.2s ease;
-}
+/* We're using a simpler sidebar toggle without hover expansion */
 
-.sidebar .sidebar-toggle:hover,
-.sidebar .sidebar-toggle:focus {
-  color: #fff;
-}
+/* Sidebar toggle styles removed as we're only using the hamburger menu */
 
 .sidebar .nav-link {
   display: flex;
@@ -473,15 +932,31 @@ a:hover {
   color: #fff;
 }
 
+.sidebar.collapsed .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+}
+
 .sidebar .nav-link.active {
   background-color: var(--bs-primary, #0d6efd);
   color: #fff;
 }
 
+.sidebar.collapsed .nav-link.active {
+  background-color: var(--bs-primary, #0d6efd);
+  box-shadow: 0 2px 8px rgba(13, 110, 253, 0.4);
+}
+
 .sidebar .nav-link.icon-only {
-  padding: 10px;
+  padding: 10px 0;
   display: flex;
   justify-content: center;
+  align-items: center;
+  margin: 5px auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
 }
 
 .sidebar .nav-link i {
@@ -490,37 +965,78 @@ a:hover {
   text-align: center;
 }
 
-/* Main content layout - updated to work with fixed sidebar */
+.sidebar.collapsed .nav-link i {
+  margin: 0 auto;
+  font-size: 18px;
+}
+
+/* App container layout */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-top: 0;
+  overflow: hidden; /* Prevent any horizontal scrolling */
+  position: relative; /* Needed for absolute positioning of child elements */
+}
+
+/* Content wrapper (holds sidebar and main content) */
+.content-wrapper {
+  display: flex;
+  flex: 1;
+  position: relative;
+  height: calc(100vh - 50px); /* Full height minus header */
+}
+
+/* Main content layout */
 .main-content {
   margin-left: 250px;
   width: calc(100% - 250px);
-  min-height: 100vh;
   transition: margin 0.3s ease, width 0.3s ease;
   padding-left: 0;
   position: relative;
+  overflow-y: auto;
+  height: 100%;
+  will-change: margin, width;
+  padding-right: 15px; /* Add padding to ensure content is not cut off */
 }
 
 .main-content.expanded {
-  margin-left: 70px; /* Increased from 60px to add space */
-  width: calc(100% - 70px);
+  margin-left: 60px;
+  width: calc(100% - 60px);
 }
 
-/* Main content header */
-.main-content .navbar {
-  padding-left: 20px;
-  padding-right: 20px;
-  position: sticky;
-  top: 0;
-  width: 100%;
-  z-index: 1020;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+/* Add transition to all sidebar nav elements */
+.sidebar .nav-link {
+  transition: all 0.3s ease;
+}
+
+.sidebar .nav-text {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  white-space: nowrap;
+}
+
+.sidebar.collapsed .nav-text {
+  opacity: 0;
+  transform: translateX(-10px);
+  position: absolute;
+}
+
+.sidebar .nav-link i {
+  transition: all 0.3s ease;
+}
+
+.sidebar.collapsed .nav-link i {
+  transform: scale(1.1);
 }
 
 /* Main content area */
 .main-content .container-fluid {
-  padding: 75px 20px 20px 20px; /* Add top padding to account for fixed navbar */
+  padding: 20px 30px 20px 20px; /* Increase right padding */
   max-width: 1600px; /* Limit max width for better readability on large screens */
   margin: 0 auto; /* Center the content */
+  height: 100%;
 }
 
 /* Mobile & responsive styles */
@@ -528,12 +1044,16 @@ a:hover {
   .sidebar {
     width: 250px;
     transform: translateX(-100%);
-    z-index: 1050; /* Higher than navbar */
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    z-index: 1030; /* Below navbar but above content */
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.25);
+    top: 50px; /* Position exactly below header */
+    height: calc(100vh - 50px); /* Full remaining height */
+    transition: transform 0.3s ease;
   }
   
   .sidebar.collapsed {
     transform: translateX(-100%);
+    width: 250px; /* Keep width consistent on mobile */
   }
   
   .sidebar:not(.collapsed) {
@@ -563,6 +1083,38 @@ a:hover {
     opacity: 1;
     visibility: visible;
   }
+  
+  /* Ensure nav items are larger and more touch-friendly on mobile */
+  .sidebar .nav-link {
+    padding: 12px 15px;
+    margin-bottom: 5px;
+  }
+}
+
+/* Tablet styles */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .sidebar {
+    width: 250px;
+  }
+  
+  .sidebar.collapsed {
+    width: 60px;
+  }
+  
+  .main-content {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+  }
+  
+  .main-content.expanded {
+    margin-left: 60px;
+    width: calc(100% - 60px);
+  }
+  
+  /* Smooth transition for icons */
+  .sidebar .nav-link i {
+    transition: margin 0.3s ease;
+  }
 }
 
 /* Larger screens */
@@ -575,6 +1127,73 @@ a:hover {
   .main-content.expanded {
     margin-left: 60px;
     width: calc(100% - 60px);
+  }
+  
+  /* Add tooltip effect for collapsed sidebar on desktop */
+  .sidebar.collapsed .nav-link {
+    position: relative;
+  }
+  
+  .sidebar.collapsed .nav-link:hover::after {
+    content: attr(title);
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    margin-left: 15px;
+    font-size: 14px;
+    white-space: nowrap;
+    z-index: 1060;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    animation: fadeIn 0.2s ease-out forwards;
+  }
+  
+  .sidebar.collapsed .nav-link:hover::before {
+    content: '';
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent rgba(0, 0, 0, 0.8) transparent transparent;
+    margin-left: 3px;
+    z-index: 1061;
+    opacity: 0;
+    animation: fadeIn 0.2s ease-out forwards;
+  }
+  
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* Dark mode support for node properties panel */
+  .dark-mode .node-properties-panel {
+    background-color: hsl(var(--dark));
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .dark-mode .node-properties-panel h3,
+  .dark-mode .node-properties-panel label {
+    color: rgba(255, 255, 255, 0.9);
+  }
+  
+  .dark-mode .node-properties-panel .form-control {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+  }
+  
+  .dark-mode .node-properties-panel .form-control:focus {
+    border-color: hsl(var(--primary));
+    box-shadow: 0 0 0 3px hsla(var(--primary), 0.3);
   }
 }
 /* Animation Classes */
@@ -636,6 +1255,144 @@ a:hover {
 .dropdown-item.active {
   background-color: hsl(var(--primary));
   color: white;
+}
+
+/* Workflow Modal Isolated Styling */
+.workflow-modal .modal-content {
+  border-radius: 8px;
+  border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.workflow-modal .modal-header {
+  background-color: hsl(var(--light));
+  border-bottom: 1px solid hsl(var(--border));
+  padding: 15px 20px;
+}
+
+.workflow-modal .modal-body {
+  padding: 20px;
+}
+
+.workflow-modal .modal-footer {
+  border-top: 1px solid hsl(var(--border));
+  padding: 15px 20px;
+}
+
+.workflow-form .form-group {
+  margin-bottom: 20px;
+}
+
+.workflow-form label {
+  font-weight: 500;
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* Node Properties Panel Styling */
+.node-properties-panel {
+  background-color: #ffffff; /* Pure white for maximum contrast */
+  border: 1px solid #d1d9e6;
+  border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  padding: 24px;
+  position: relative;
+}
+
+.node-properties-panel .close-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e63946; /* Bright red for visibility */
+  color: white;
+  border: 2px solid white;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 5;
+  transition: all 0.2s ease;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+  outline: none;
+}
+
+.node-properties-panel .close-button:hover {
+  background-color: #d32f2f;
+  transform: scale(1.1);
+}
+
+.node-properties-panel .close-button:focus {
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.5);
+}
+
+.node-properties-panel .close-button i {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.node-properties-panel h3 {
+  color: #1a1a1a; /* Near black for max contrast */
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid hsl(var(--border));
+}
+
+.node-properties-panel label {
+  color: #2c3e50; /* Dark blue-gray for good contrast */
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 8px;
+  display: block;
+  letter-spacing: 0.01em;
+}
+
+.node-properties-panel .form-group {
+  margin-bottom: 15px;
+}
+
+.node-properties-panel .form-control {
+  border: 2px solid #d1d9e6;
+  border-radius: 6px;
+  padding: 10px 14px;
+  background-color: #f8fafc;
+  color: #2c3e50;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.node-properties-panel .form-control:focus {
+  border-color: #3498db;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25);
+  outline: none;
+}
+
+.node-properties-panel .form-control::placeholder {
+  color: #a0aec0;
+}
+
+.node-properties-panel .btn-primary {
+  background-color: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+  font-weight: 500;
+}
+
+.node-properties-panel .btn-secondary {
+  background-color: hsl(var(--secondary));
+  border-color: hsl(var(--secondary));
+  font-weight: 500;
+}
+
+.node-properties-panel .btn-danger {
+  background-color: hsl(var(--danger));
+  border-color: hsl(var(--danger));
+  font-weight: 500;
 }
 
 /* List Group Enhancements */

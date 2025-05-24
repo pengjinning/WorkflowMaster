@@ -7,36 +7,44 @@ function Header() {
   const { toggleSidebar, collapsed } = useContext(SidebarContext);
   
   return (
-    <nav className="navbar navbar-expand navbar-light bg-white border-bottom shadow-sm">
-      <div className="container-fluid px-3">
+    <nav className="navbar navbar-expand navbar-dark bg-dark border-bottom">
+      <div className="container-fluid px-3 py-0">
         <div className="d-flex align-items-center">
           <button 
-            className="btn btn-sm btn-outline-secondary me-3 d-md-none" 
+            className="sidebar-toggle-btn me-3" 
             onClick={toggleSidebar}
             aria-label="Toggle Sidebar"
             type="button"
           >
-            <i className="fas fa-bars"></i>
+            <div className="hamburger-icon">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
           </button>
-          <span className="navbar-brand h1 mb-0 fs-5">
-            <i className="fas fa-cogs me-2"></i>
-            Workflow Automation
-          </span>
+          
+          {/* Logo and branding */}
+          <div className="d-flex align-items-center">
+            <i className="fas fa-robot me-2 text-primary"></i>
+            <span className="navbar-brand mb-0 h5 text-light">
+              Workflow Automation
+            </span>
+          </div>
         </div>
         
         <div className="navbar-nav ms-auto">
           <div className="nav-item dropdown">
             <a
-              className="nav-link dropdown-toggle d-flex align-items-center"
+              className="nav-link dropdown-toggle d-flex align-items-center text-light py-1"
               href="#"
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              <i className="fas fa-user-circle me-2 fs-5"></i>
-              {user?.username || 'User'}
+              <i className="fas fa-user-circle me-1 fs-5"></i>
+              <span className="small">{user?.username || 'User'}</span>
             </a>
-            <ul className="dropdown-menu dropdown-menu-end">
+            <ul className="dropdown-menu dropdown-menu-end dropdown-menu-dark">
               <li>
                 <a className="dropdown-item" href="#">
                   <i className="fas fa-user me-2"></i>

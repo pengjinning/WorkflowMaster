@@ -42,32 +42,43 @@ function MainLayout() {
   // Update backdrop visibility based on sidebar state and device
   useEffect(() => {
     setShowBackdrop(!collapsed && isMobile);
+    
+    // Prevent body scrolling when mobile sidebar is open
+    if (!collapsed && isMobile) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
   }, [collapsed, isMobile]);
   
   return (
-    <div className="app-container d-flex">
-      <Sidebar />
+    <div className="app-container">
+      <Header />
       
-      <div className={`main-content ${collapsed ? 'expanded' : ''}`}>
-        <Header />
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-12">
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/workflows" element={<WorkflowsPage />} />
-                <Route path="/tasks" element={<TasksPage />} />
-              </Routes>
+      <div className="content-wrapper">
+        <Sidebar />
+        
+        <div className={`main-content ${collapsed ? 'expanded' : ''}`}>
+          <div className="container-fluid py-3">
+            <div className="row">
+              <div className="col-12">
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/workflows" element={<WorkflowsPage />} />
+                  <Route path="/tasks" element={<TasksPage />} />
+                </Routes>
+              </div>
             </div>
           </div>
         </div>
+        
+        {/* Mobile backdrop for sidebar - only shown on mobile when sidebar is open */}
+        <div 
+          className={`sidebar-backdrop ${showBackdrop ? 'show' : ''}`} 
+          onClick={toggleSidebar}
+          style={{ willChange: 'opacity' }}
+        />
       </div>
-      
-      {/* Mobile backdrop for sidebar - only shown on mobile when sidebar is open */}
-      <div 
-        className={`sidebar-backdrop ${showBackdrop ? 'show' : ''}`} 
-        onClick={toggleSidebar}
-      />
     </div>
   );
 }
