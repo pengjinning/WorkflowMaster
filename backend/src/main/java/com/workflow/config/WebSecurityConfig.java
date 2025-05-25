@@ -2,6 +2,7 @@ package com.workflow.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -21,19 +22,19 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors().configurationSource(securityCorsConfigurationSource())
-            .and()
-            .csrf().disable()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .authorizeHttpRequests(authorize -> authorize
-                    // Allow access to all endpoints for development purposes
-                    .requestMatchers("/api/**").permitAll()
-                    .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                    .requestMatchers("/h2-console/**").permitAll()
-                    .requestMatchers("/actuator/**").permitAll()
-                    .anyRequest().permitAll() // For development, permit all requests
-            );
+                // Use Spring's default CORS configuration from application.yml
+                .cors(Customizer.withDefaults())
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeHttpRequests(authorize -> authorize
+                        // Allow access to all endpoints for development purposes
+                        .requestMatchers("/api/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/actuator/**").permitAll()
+                        .anyRequest().permitAll() // For development, permit all requests
+                );
             
         // For H2 Console
         http.headers().frameOptions().disable();

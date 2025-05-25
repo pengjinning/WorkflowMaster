@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { workflowService } from '../services/workflowService';
 import WorkflowCanvas from '../components/WorkflowBuilder/WorkflowCanvas';
+import WorkflowCard from '../components/WorkflowCard';
 
 function WorkflowsPage() {
   const [workflows, setWorkflows] = useState([]);
@@ -151,105 +152,13 @@ function WorkflowsPage() {
         <div className="row">
           {workflows.map((workflow) => (
             <div key={workflow.id} className="col-md-6 col-lg-4 mb-4">
-              <div className="card h-100">
-                <div className="card-body">
-                  <div className="d-flex justify-content-between align-items-start mb-2">
-                    <h5 className="card-title">{workflow.name}</h5>
-                    <div className="form-check form-switch">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        checked={workflow.active}
-                        onChange={(e) => handleToggleWorkflow(workflow.id, e.target.checked)}
-                        title={workflow.active ? 'Deactivate workflow' : 'Activate workflow'}
-                      />
-                    </div>
-                  </div>
-                  
-                  <p className="card-text">{workflow.description}</p>
-                  
-                  <div className="mb-2">
-                    <span className={`badge ${workflow.active ? 'bg-success' : 'bg-secondary'}`}>
-                      {workflow.active ? 'Active' : 'Inactive'}
-                    </span>
-                  </div>
-
-                  <div className="card-text">
-                    <small className="text-muted">
-                      Created: {new Date(workflow.createdAt).toLocaleDateString()}
-                    </small>
-                  </div>
-
-                  {workflow.updatedAt && (
-                    <div className="card-text">
-                      <small className="text-muted">
-                        Updated: {new Date(workflow.updatedAt).toLocaleDateString()}
-                      </small>
-                    </div>
-                  )}
-                </div>
-
-                <div className="card-footer bg-transparent">
-                  <div className="btn-group w-100" role="group">
-                    <button
-                      className="btn btn-outline-primary btn-sm"
-                      onClick={() => handleEditWorkflow(workflow)}
-                    >
-                      <i className="fas fa-edit me-1"></i>
-                      Edit
-                    </button>
-                    
-                    <button
-                      className="btn btn-outline-success btn-sm"
-                      onClick={() => handleExecuteWorkflow(workflow.id)}
-                      disabled={!workflow.active}
-                    >
-                      <i className="fas fa-play me-1"></i>
-                      Execute
-                    </button>
-                    
-                    <div className="btn-group" role="group">
-                      <button
-                        className="btn btn-outline-secondary btn-sm dropdown-toggle"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        <i className="fas fa-ellipsis-v"></i>
-                      </button>
-                      <ul className="dropdown-menu">
-                        <li>
-                          <button
-                            className="dropdown-item"
-                            onClick={() => handleEditWorkflow(workflow)}
-                          >
-                            <i className="fas fa-edit me-2"></i>
-                            Edit
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            className="dropdown-item"
-                            onClick={() => navigator.clipboard.writeText(`${window.location.origin}/api/webhooks/n8n/trigger/${workflow.id}`)}
-                          >
-                            <i className="fas fa-link me-2"></i>
-                            Copy Webhook URL
-                          </button>
-                        </li>
-                        <li><hr className="dropdown-divider" /></li>
-                        <li>
-                          <button
-                            className="dropdown-item text-danger"
-                            onClick={() => handleDeleteWorkflow(workflow.id)}
-                          >
-                            <i className="fas fa-trash me-2"></i>
-                            Delete
-                          </button>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <WorkflowCard
+                workflow={workflow}
+                onEdit={handleEditWorkflow}
+                onExecute={handleExecuteWorkflow}
+                onToggle={handleToggleWorkflow}
+                onDelete={handleDeleteWorkflow}
+              />
             </div>
           ))}
         </div>

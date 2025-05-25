@@ -70,7 +70,7 @@ function NodePalette({ onAddNode }) {
       </div>
       
       <div className="palette-footer mt-4">
-        <small className="text-muted">
+        <small className="text-muted-dummy">
           <i className="fas fa-info-circle me-1"></i>
           Drag nodes to the canvas
         </small>

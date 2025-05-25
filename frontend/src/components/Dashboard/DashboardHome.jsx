@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { workflowService } from '../../services/workflowService';
+import StatsCard from './StatsCard';
 
 function DashboardHome() {
   const [stats, setStats] = useState({
@@ -21,7 +22,7 @@ function DashboardHome() {
   const loadDashboardData = async () => {
     try {
       setLoading(true);
-      
+
       // Load workflows and tasks
       const [workflows, tasks] = await Promise.all([
         workflowService.getWorkflows(),
@@ -92,73 +93,41 @@ function DashboardHome() {
       {/* Stats Cards */}
       <div className="row mb-4">
         <div className="col-md-3 mb-3">
-          <div className="card bg-primary text-white">
-            <div className="card-body">
-              <div className="d-flex justify-content-between">
-                <div>
-                  <h3 className="card-title">{stats.totalWorkflows}</h3>
-                  <p className="card-text">Total Workflows</p>
-                </div>
-                <div className="align-self-center">
-                  <i className="fas fa-project-diagram fa-2x"></i>
-                </div>
-              </div>
-              <div className="mt-2">
-                <small>{stats.activeWorkflows} active</small>
-              </div>
-            </div>
-          </div>
+          <StatsCard
+            bgColor="bg-primary"
+            title="Total Workflows"
+            value={stats.totalWorkflows}
+            subtitle={`${stats.activeWorkflows} active`}
+            icon="fa-project-diagram"
+          />
         </div>
 
         <div className="col-md-3 mb-3">
-          <div className="card bg-info text-white">
-            <div className="card-body">
-              <div className="d-flex justify-content-between">
-                <div>
-                  <h3 className="card-title">{stats.totalTasks}</h3>
-                  <p className="card-text">Total Tasks</p>
-                </div>
-                <div className="align-self-center">
-                  <i className="fas fa-tasks fa-2x"></i>
-                </div>
-              </div>
-              <div className="mt-2">
-                <small>{stats.runningTasks} running</small>
-              </div>
-            </div>
-          </div>
+          <StatsCard
+            bgColor="bg-info"
+            title="Total Tasks"
+            value={stats.totalTasks}
+            subtitle={`${stats.runningTasks} running`}
+            icon="fa-tasks"
+          />
         </div>
 
         <div className="col-md-3 mb-3">
-          <div className="card bg-success text-white">
-            <div className="card-body">
-              <div className="d-flex justify-content-between">
-                <div>
-                  <h3 className="card-title">{stats.completedTasks}</h3>
-                  <p className="card-text">Completed Tasks</p>
-                </div>
-                <div className="align-self-center">
-                  <i className="fas fa-check-circle fa-2x"></i>
-                </div>
-              </div>
-            </div>
-          </div>
+          <StatsCard
+            bgColor="bg-success"
+            title="Completed Tasks"
+            value={stats.completedTasks}
+            icon="fa-check-circle"
+          />
         </div>
 
         <div className="col-md-3 mb-3">
-          <div className="card bg-danger text-white">
-            <div className="card-body">
-              <div className="d-flex justify-content-between">
-                <div>
-                  <h3 className="card-title">{stats.failedTasks}</h3>
-                  <p className="card-text">Failed Tasks</p>
-                </div>
-                <div className="align-self-center">
-                  <i className="fas fa-exclamation-circle fa-2x"></i>
-                </div>
-              </div>
-            </div>
-          </div>
+          <StatsCard
+            bgColor="bg-danger"
+            title="Failed Tasks"
+            value={stats.failedTasks}
+            icon="fa-exclamation-circle"
+          />
         </div>
       </div>
 
