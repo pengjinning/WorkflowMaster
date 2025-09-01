@@ -9,7 +9,6 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 @Configuration
 @ConfigurationProperties(prefix = "spring.mvc.cors")

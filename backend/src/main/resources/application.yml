@@ -21,6 +21,10 @@ spring:
       allow-credentials: true
       max-age: 3600
   
+  # http://localhost:8000/h2-console
+  # JDBC URL: jdbc:h2:mem:testdb
+  # 用户名: sa
+  # 密码: （留空即可）
   datasource:
     url: ${DATABASE_URL:jdbc:h2:mem:testdb}
     username: ${DATABASE_USERNAME:sa}
