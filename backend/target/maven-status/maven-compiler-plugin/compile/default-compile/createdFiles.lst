@@ -5,7 +5,6 @@ com/workflow/dto/ExecutionResultDTO.class
 com/workflow/service/NotificationService.class
 com/workflow/controller/WebhookController.class
 com/workflow/dto/NodeDTO.class
-com/workflow/config/SecurityConfig.class
 com/workflow/controller/AuthController.class
 com/workflow/engine/NodeExecutor.class
 com/workflow/dto/WorkflowDTO.class

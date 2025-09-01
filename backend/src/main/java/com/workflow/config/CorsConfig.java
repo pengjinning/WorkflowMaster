@@ -9,8 +9,6 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
-
-import org.springframework.web.filter.CorsFilter;
 import java.util.Collections;
 
 @Configuration
@@ -20,53 +18,27 @@ public class CorsConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOriginPatterns("*")
-                .allowedMethods("*")
+                .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
-                .exposedHeaders("Authorization")
-                .allowCredentials(true)
+                .exposedHeaders("Authorization", "Content-Disposition")
+                .allowCredentials(false)  // Set to false to allow wildcard origins
                 .maxAge(3600);
     }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // Set specific origins instead of patterns for better compatibility
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5001"));
-        // Fall back to patterns if needed
+        
+        // Use origin patterns instead of specific origins to allow wildcards
         configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        // Do not include "Access-Control-Allow-Origin" as an allowed header
-        configuration.setAllowedHeaders(Arrays.asList(
-            "Authorization", 
-            "Content-Type", 
-            "X-Requested-With", 
-            "Accept", 
-            "Origin", 
-            "Access-Control-Request-Method", 
-            "Access-Control-Request-Headers"
-        ));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Disposition"));
-        configuration.setAllowCredentials(true);
+        configuration.setAllowCredentials(false);  // Must be false when using wildcard origins
         configuration.setMaxAge(3600L);
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
-    }
-    
-    @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        // Set specific origins for better compatibility
-        config.setAllowedOrigins(Arrays.asList("http://localhost:5001"));
-        // Fall back to patterns if needed
-        config.setAllowedOriginPatterns(Collections.singletonList("*"));
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        config.setExposedHeaders(Arrays.asList("Authorization", "Content-Disposition"));
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
     }
 }

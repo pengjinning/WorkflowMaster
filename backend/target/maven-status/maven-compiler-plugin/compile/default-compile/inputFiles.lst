@@ -32,9 +32,6 @@
 /Users/ningjinpeng/Desktop/git/private/github/im/WorkflowMaster/backend/src/main/java/com/workflow/service/WorkflowService.java
 /Users/ningjinpeng/Desktop/git/private/github/im/WorkflowMaster/backend/src/main/java/com/workflow/repository/UserRepository.java
 /Users/ningjinpeng/Desktop/git/private/github/im/WorkflowMaster/backend/src/main/java/com/workflow/engine/WorkflowEngine.java
-/Users/ningjinpeng/Desktop/git/private/github/im/WorkflowMaster/backend/src/main/java/com/workflow/config/CorsProperties.java
 /Users/ningjinpeng/Desktop/git/private/github/im/WorkflowMaster/backend/src/main/java/com/workflow/controller/WebhookController.java
 /Users/ningjinpeng/Desktop/git/private/github/im/WorkflowMaster/backend/src/main/java/com/workflow/dto/TaskDTO.java
-/Users/ningjinpeng/Desktop/git/private/github/im/WorkflowMaster/backend/src/main/java/com/workflow/config/GlobalCorsFilter.java
-/Users/ningjinpeng/Desktop/git/private/github/im/WorkflowMaster/backend/src/main/java/com/workflow/config/SecurityConfig.java
 /Users/ningjinpeng/Desktop/git/private/github/im/WorkflowMaster/backend/src/main/java/com/workflow/exception/GlobalExceptionHandler.java

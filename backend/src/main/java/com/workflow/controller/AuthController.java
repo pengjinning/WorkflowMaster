@@ -1,7 +1,18 @@
+/*
+ * @Author: jackning 270580156@qq.com
+ * @Date: 2025-09-01 16:44:01
+ * @LastEditors: jackning 270580156@qq.com
+ * @LastEditTime: 2025-09-01 17:03:58
+ * @Description: bytedesk.com https://github.com/Bytedesk/bytedesk
+ *   Please be aware of the BSL license restrictions before installing Bytedesk IM – 
+ *  selling, reselling, or hosting Bytedesk IM as a service is a breach of the terms and automatically terminates your rights under the license. 
+ *  Business Source License 1.1: https://github.com/Bytedesk/bytedesk/blob/main/LICENSE 
+ *  contact: 270580156@qq.com 
+ * 
+ * Copyright (c) 2025 by bytedesk.com, All Rights Reserved. 
+ */
 package com.workflow.controller;
 
-import com.workflow.dto.LoginRequest;
-import com.workflow.dto.RegisterRequest;
 import com.workflow.model.User;
 import com.workflow.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;

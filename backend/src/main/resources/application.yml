@@ -9,18 +9,6 @@ spring:
   main:
     allow-bean-definition-overriding: true
   
-  # Simplified global CORS configuration
-  mvc:
-    cors:
-      mapping: "/**"
-      allowed-origins: "*"
-      allowed-origin-patterns: "*"
-      allowed-methods: "*"
-      allowed-headers: "*"
-      exposed-headers: "Authorization,Content-Disposition"
-      allow-credentials: true
-      max-age: 3600
-  
   # http://localhost:8000/h2-console
   # JDBC URL: jdbc:h2:mem:testdb
   # 用户名: sa

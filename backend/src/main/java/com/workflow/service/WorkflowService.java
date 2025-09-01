@@ -28,8 +28,8 @@ public class WorkflowService {
     @Autowired
     private WorkflowEngine workflowEngine;
 
-    @Autowired
-    private NotificationService notificationService;
+    // @Autowired
+    // private NotificationService notificationService;
 
     @PostConstruct
     public void initializeDummyWorkflow() {
