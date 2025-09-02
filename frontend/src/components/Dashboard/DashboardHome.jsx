@@ -91,7 +91,7 @@ function DashboardHome() {
       </div>
 
       {/* Stats Cards */}
-      <div className="row mb-4">
+      <div className="row stats-row mb-4">
         <div className="col-md-3 mb-3">
           <StatsCard
             bgColor="bg-primary"
@@ -134,7 +134,7 @@ function DashboardHome() {
       <div className="row">
         {/* Recent Workflows */}
         <div className="col-md-6 mb-4">
-          <div className="card">
+          <div className="card h-100">
             <div className="card-header">
               <h5 className="mb-0">
                 <i className="fas fa-project-diagram me-2"></i>
@@ -175,7 +175,7 @@ function DashboardHome() {
 
         {/* Recent Tasks */}
         <div className="col-md-6 mb-4">
-          <div className="card">
+          <div className="card h-100">
             <div className="card-header">
               <h5 className="mb-0">
                 <i className="fas fa-tasks me-2"></i>
@@ -219,7 +219,7 @@ function DashboardHome() {
       {/* Quick Actions */}
       <div className="row">
         <div className="col-12">
-          <div className="card">
+          <div className="card h-100">
             <div className="card-header">
               <h5 className="mb-0">
                 <i className="fas fa-bolt me-2"></i>

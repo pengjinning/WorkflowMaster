@@ -443,11 +443,12 @@ html, body, #root, .app {
 
 .stats-row .card {
   width: 100%;
-  height: 100%;
+  height: 131px; /* Fixed height for stability */
   min-height: 131px; /* Fixed minimum height */
   display: flex;
   flex-direction: column;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  will-change: transform, box-shadow; /* Optimize animations */
 }
 
 .stats-row .card:hover {
@@ -461,12 +462,23 @@ html, body, #root, .app {
   justify-content: space-between;
   padding: 1.5rem;
   flex: 1;
+  overflow: hidden; /* Prevent content overflow */
 }
 
 .stats-row .card .display-4 {
   font-size: 2.5rem;
   font-weight: 500;
   line-height: 1.2;
+}
+
+/* Dashboard specific optimizations */
+.dashboard .card {
+  transform: translateZ(0); /* Force hardware acceleration */
+  backface-visibility: hidden; /* Prevent flickering */
+}
+
+.dashboard .row {
+  will-change: auto; /* Only animate when necessary */
 }
 
 /* Ensure all cards in stats-row have exactly the same height */

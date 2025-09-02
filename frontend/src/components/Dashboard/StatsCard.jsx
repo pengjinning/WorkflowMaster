@@ -1,15 +1,8 @@
 import React from 'react';
-import useOverflowDetection from '../../hooks/useOverflowDetection';
 
 const StatsCard = ({ bgColor, title, value, subtitle, icon }) => {
-  const { ref, height } = useOverflowDetection(131);
-
   return (
-    <div 
-      className={`card ${bgColor} text-white`} 
-      ref={ref} 
-      style={{ height: `${height}px`, overflow: 'hidden' }}
-    >
+    <div className={`card ${bgColor} text-white`}>
       <div className="card-body">
         <div className="d-flex justify-content-between">
           <div>
